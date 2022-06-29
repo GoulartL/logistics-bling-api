@@ -1,0 +1,7 @@
+/data/db
+/vendor
+.env
+package-lock.json
+
+## Visual Studio
+*.vscode

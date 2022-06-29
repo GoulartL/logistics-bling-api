@@ -1,0 +1,34 @@
+version: "3"
+services:
+    web:
+        container_name: sv-nginx
+        build: .docker/nginx
+        links:
+            - php
+        ports:
+            - "80:80"
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+    php:
+        container_name: sv-php
+        build: .docker/php
+        links:
+            - database
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+    database:
+        container_name: sv-database
+        image: mysql:${MYSQL_VERSION}
+        restart: always
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - 3306
+        volumes:
+            - "./data/db/mysql:/var/lib/mysql"
